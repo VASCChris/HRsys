@@ -11,7 +11,7 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	welcome();
-});
+}); 
 //=======================================顯示登入者=====================================================
 function welcome(){
 	$.ajax({
