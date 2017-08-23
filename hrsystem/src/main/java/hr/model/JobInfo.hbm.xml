@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="hr.model.JobInfoBean" table="job" >
+        
+        <id name="no" column="no">
+            <generator class="identity"/>
+        </id>
+
+        <property name="name" column="name" />
+        <set name="emps" table="employee" lazy="false" inverse="false">
+               <key><column name="job_No" /></key>
+               <one-to-many class="hr.model.EmpInfoBean"/>
+        </set>
+        
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="hr.model.EmpInfoBean" table="employee" >
+        
+        <id name="id" column="id">
+            <generator class="identity"/>
+        </id>
+
+        <property name="account" column="account" />
+        <property name="password" column="pwd" />
+        <property name="empNo" column="emp_No" />
+        <property name="name" column="name" />
+        <property name="engName" column="eng_name" />
+        <property name="ext" column="ext" />
+<!--         <property name="depNo" column="dep_No" /> -->
+        <many-to-one name="depInfoBean" class="hr.model.DepInfoBean" lazy="false">
+              <column name="dep_No"></column>
+        </many-to-one>
+<!--         <property name="jobNo" column="job_No" /> -->
+        <many-to-one name="jobInfoBean" class="hr.model.JobInfoBean" lazy="false">
+              <column name="job_No"></column>
+        </many-to-one>
+        <property name="character" column="characters" />
+        
+        
+    </class>
+</hibernate-mapping>
