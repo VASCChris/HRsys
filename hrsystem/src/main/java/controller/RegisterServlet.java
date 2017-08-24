@@ -77,8 +77,8 @@ public class RegisterServlet extends HttpServlet {
 		String jobNo = request.getParameter("job");
 		String character = request.getParameter("character");
 		String send = request.getParameter("send");
-		int x = empNo.charAt(1);
-		System.out.println("X="+x);
+		
+		
 		//驗證資料
 		if("register".equals(send)){
 			if (account == null || account.trim().length() == 0) {
