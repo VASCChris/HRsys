@@ -289,13 +289,11 @@ function login() {
 
 <div class="user-card round5">
 	<div class="login-box">
-<!-- 		<form class="login-form" name="login" action=""> -->
 			<input type="username" id="account" name="username" class="username" placeholder="username" />
 			<input type="password" id="password" name="password" class="password" placeholder="password" />
 			<small id="msg" style="color: red;"></small>
 			<br><br>
 			<input type="button" name="login" value="Login" class="login" onclick="login()" />
-<!-- 		</form> -->
 
 <!-- 		<div class="or"></div> -->
 
@@ -304,20 +302,8 @@ function login() {
 <!-- 			Login with google -->
 <!-- 		</a> -->
 	</div>
-<!-- 	<div class="signup-box"> -->
-<!-- 		<form class="signup-form" name="signup" action=""> -->
-<!-- 			<input type="username" name="username" class="username" placeholder="username" /> -->
-<!-- 			<input type="email" name="email" class="email" placeholder="email" /> -->
-<!-- 			<input type="password" name="password" class="password" placeholder="password" /> -->
-<!-- 			<input type="password" name="confirm-password" class="confirm-password" placeholder="confirm-password" /> -->
-<!-- 			<input type="submit" name="signup" value="Signup" class="signup" /> -->
-<!-- 		</form> -->
-<!-- 	</div> -->
-
-	<!-- Card Footer -->
 
 	<div class="footer">
-<!-- 		<span>or </span><a class="toggle-link" href="#">Sign Up</a> -->
 	</div>
 </div>
 

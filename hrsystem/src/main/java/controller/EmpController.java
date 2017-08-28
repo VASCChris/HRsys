@@ -73,7 +73,6 @@ public class EmpController implements Serializable{
     @ResponseBody
 	public String empUpdate(String id, String account,String empNo,String name,String engName,String ext,String depNo,String jobNo,String character) throws Exception {
 		
-		EmpInfoBean empInfoBean = new EmpInfoBean();
 		DepInfoBean depInfoBean = new DepInfoBean();
 		JobInfoBean jobInfoBean = new JobInfoBean();
 		
@@ -107,6 +106,31 @@ public class EmpController implements Serializable{
 		  return null;
 	}
 	
+	@RequestMapping(value = "/pw", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+    @ResponseBody
+    public String chagePW(HttpServletRequest request,String oldPW,String newPW,String checkPW) throws Exception {
+		HttpSession session = request.getSession();
+		JSONObject jsonObject = new JSONObject();
+		
+		EmpInfoBean emp = (EmpInfoBean)session.getAttribute("loginToken");
+		String originalPW = emp.getPassword();
+		System.out.println(oldPW);
+		if(oldPW.equals("") || newPW.equals("") || checkPW.equals("")) {
+			jsonObject.put("result", "欄位不可有空白");
+			return jsonObject.toString();
+		}
+		
+		if(oldPW.equals(originalPW) && newPW.equals(checkPW)) {
+			emp.setPassword(newPW);
+			empInfoService.update(emp);
+			jsonObject.put("result", "OK");
+		}else if(!oldPW.equals(originalPW)){
+			jsonObject.put("result", "舊密碼錯誤");
+		}else if(!newPW.equals(checkPW)){
+			jsonObject.put("result", "新密碼不一致");
+		}
+		return jsonObject.toString();
+	}
 	
 	@RequestMapping(value = "/del", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
     @ResponseBody
@@ -136,6 +160,7 @@ public class EmpController implements Serializable{
 		EmpInfoBean emp = (EmpInfoBean)session.getAttribute("loginToken");
 		try {
 			jsonObject.put("name", emp.getName());
+			jsonObject.put("character", emp.getCharacter());
 		} catch (NullPointerException e) {
 			return null;
 		}
