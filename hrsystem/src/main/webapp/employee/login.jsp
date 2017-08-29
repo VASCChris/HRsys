@@ -282,6 +282,12 @@ function login() {
         }
     });
 }
+//==================================================Enter=登入==================================================
+function abgne() {
+	if (event.keyCode == "13") {
+		document.getElementById("btn").click();
+	}
+}
 </script>
 
 </head><body>
@@ -290,10 +296,10 @@ function login() {
 <div class="user-card round5">
 	<div class="login-box">
 			<input type="username" id="account" name="username" class="username" placeholder="username" />
-			<input type="password" id="password" name="password" class="password" placeholder="password" />
+			<input type="password" id="password" name="password" class="password" placeholder="password" onkeyup="abgne()" />
 			<small id="msg" style="color: red;"></small>
 			<br><br>
-			<input type="button" name="login" value="Login" class="login" onclick="login()" />
+			<input id="btn" type="button" name="login" value="Login" class="login" onclick="login()" />
 
 <!-- 		<div class="or"></div> -->
 

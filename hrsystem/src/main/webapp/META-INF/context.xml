@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context>
+<!-- 正式 -->
 <!-- <Resource name="jdbc/hrsystem" auth="Container" type="javax.sql.DataSource" -->
 <!-- 		maxTotal="100" maxIdle="30" maxWaitMillis="10000" -->
 <!-- 		username="root" password="vasc53097708" -->
 <!-- 		driverClassName="org.mariadb.jdbc.Driver" -->
 <!-- 		url="jdbc:mariadb://localhost:3306/HRSystem"/> -->
+<!-- 本機測試 -->
 <Resource name="jdbc/hrsystem" auth="Container" type="javax.sql.DataSource"
 		maxTotal="100" maxIdle="30" maxWaitMillis="10000"
 		username="root" password="sa123456"
 		driverClassName="com.mysql.jdbc.Driver"
-		url="jdbc:mysql://localhost:3306/hrsystem"/>
+		url="jdbc:mysql://localhost:3306/HRSystem"/>
 </Context>

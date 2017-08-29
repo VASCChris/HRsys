@@ -5,8 +5,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
- <script  src="http://code.jquery.com/jquery-1.12.4.min.js"  integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
- <script type="text/javascript" src="<%=StringEscapeUtils.escapeHtml(request.getContextPath())%>/resource/js/bootstrap.js"></script>
 
 
 <script type="text/javascript">
@@ -66,6 +64,7 @@ function logout(){
         	$('#member').html('');
         	$('#management').html('');
         	$('#welcome').append(bodyHTML);
+        	document.location.href='<%=StringEscapeUtils.escapeHtml(request.getContextPath())%>/index.jsp';
         },
         error: function (data) {
         	console.log("error");

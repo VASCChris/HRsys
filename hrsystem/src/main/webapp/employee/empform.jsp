@@ -191,7 +191,6 @@ function check(){
 </fieldset>
 </form>
 </div>
-    </div><!-- /.container -->
-<a href="../index.jsp">上一頁</a>
+    </div>
 
 </body></html>

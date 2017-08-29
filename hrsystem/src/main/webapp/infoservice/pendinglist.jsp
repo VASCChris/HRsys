@@ -789,7 +789,7 @@ function stage5(data){
     bodyHTML += '<input type="hidden" id="stage" value="6.0" />';
     $('#formDetail').append(bodyHTML);
 }
-//==================================================stage 3 & 4.5 日期相關==================================================
+//==================================================stage 3 & 4.5 日期相關(取得minDate)==================================================
 function endTime(){
 	var x = "'";
 	var y = 'WdatePicker({skin:"whyGreen",dateFmt:"yyyy-MM-dd HH:mm",minDate:"'+$('#pStartTime').val()+'"})';
@@ -903,6 +903,7 @@ function infoSecurity(){
 	        	for (var i = 0; i < data.length; i++) {
 	        		securityLvAdd(data[i]);
 	        	}
+	        	
 	        }
 	    });
 	}
@@ -1054,7 +1055,6 @@ function send(){
     </div>
   </div>
 </div>
-<a href="../index.jsp">上一頁</a>
 
 
 

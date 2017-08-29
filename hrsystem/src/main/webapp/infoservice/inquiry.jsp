@@ -385,6 +385,5 @@ function dateFormat(timestamp) {
     </div>
   </div>
 </div>
-<a href="../index.jsp">上一頁</a>
 </body>
 </html>

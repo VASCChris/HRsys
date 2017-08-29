@@ -275,6 +275,5 @@ function addDep(data){
 			
   </tbody>
 </table>
-<a href="../index.jsp">上一頁</a>
 
 </body></html>
