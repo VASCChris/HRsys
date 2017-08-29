@@ -10,11 +10,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css'>
-<!-- 日曆的 -->
-<link rel="stylesheet" href="<%=StringEscapeUtils.escapeHtml(request.getContextPath())%>/resource/css/jquery.cxcalendar.css">
-<link rel="stylesheet" href="<%=StringEscapeUtils.escapeHtml(request.getContextPath())%>/resource/css/base.css">
-<link rel="stylesheet" href="<%=StringEscapeUtils.escapeHtml(request.getContextPath())%>/resource/css/layout.css">
-<script src="<%=StringEscapeUtils.escapeHtml(request.getContextPath())%>/resource/js/jquery.cxcalendar.js"></script>
+
 
 <script language="JavaScript" type="text/javascript" src="<%=StringEscapeUtils.escapeHtml(request.getContextPath())%>/resource/js/WdatePicker.js"></script>
 <style class="cp-pen-styles">
@@ -112,8 +108,23 @@ section{
 </head>
 <script type="text/javascript">
 $(document).ready(function(){
+	check();
 	list();
 });
+//=======================================檢查LoginToken=====================================================
+function check(){
+	$.ajax({
+        type: 'get',
+        url: '<%=StringEscapeUtils.escapeHtml(request.getContextPath())%>/emp/welcome',
+        
+        dataType: 'json',
+        async: false,
+        cache: false,
+        error: function (data) {
+        	document.location.href="<%=StringEscapeUtils.escapeHtml(request.getContextPath())%>/employee/login.jsp";
+        }
+    });
+}
 //=======================================待處理清單===============================================
 function list(){
 	$.ajax({
@@ -964,6 +975,7 @@ function send(){
 }
 </script>
 <body>
+<jsp:include page="/headline.jsp"></jsp:include>
 <!-- list -->
 <center>
 <section style="width: 500px;">

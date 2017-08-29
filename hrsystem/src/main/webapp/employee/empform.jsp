@@ -5,6 +5,7 @@
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
 <html>
 <head>
+<script  src="http://code.jquery.com/jquery-1.12.4.min.js"  integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
 <script src='//production-assets.codepen.io/assets/editor/live/console_runner-079c09a0e3b9ff743e39ee2d5637b9216b3545af0de366d4b9aad9dc87e26bfd.js'></script><script src='//production-assets.codepen.io/assets/editor/live/events_runner-73716630c22bbc8cff4bd0f07b135f00a0bdc5d14629260c3ec49e5606f98fdd.js'></script><script src='//production-assets.codepen.io/assets/editor/live/css_live_reload_init-2c0dc5167d60a5af3ee189d570b1835129687ea2a61bee3513dee3a50c115a77.js'></script><meta charset='UTF-8'><meta name="robots" content="noindex"><link rel="shortcut icon" type="image/x-icon" href="//production-assets.codepen.io/assets/favicon/favicon-8ea04875e70c4b0bb41da869e81236e54394d63638a1ef12fa558a4a835f1164.ico" /><link rel="mask-icon" type="" href="//production-assets.codepen.io/assets/favicon/logo-pin-f2d2b6d2c61838f7e76325261b7195c27224080bc099486ddd6dccb469b8e8e6.svg" color="#111" /><link rel="canonical" href="https://codepen.io/jaycbrf/pen/iBszr" />
 <script src="https://s.codepen.io/assets/libs/modernizr.js" type="text/javascript"></script>
 
@@ -14,8 +15,28 @@
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="<%=StringEscapeUtils.escapeHtml(request.getContextPath())%>/resource/css/font-awesome.min.css">
 <script src="https://use.fontawesome.com/4e67c494c5.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	check();
+}); 
+//=======================================檢查LoginToken=====================================================
+function check(){
+	$.ajax({
+        type: 'get',
+        url: '<%=StringEscapeUtils.escapeHtml(request.getContextPath())%>/emp/welcome',
+        
+        dataType: 'json',
+        async: false,
+        cache: false,
+        error: function (data) {
+        	document.location.href="<%=StringEscapeUtils.escapeHtml(request.getContextPath())%>/employee/login.jsp";
+        }
+    });
+}
+</script>
 </head>
 <body>
+<jsp:include page="/headline.jsp"></jsp:include>
 <div class="container">
 
 <form class="well form-horizontal" action='<c:url value="/employee/Register.controller"/>' method="post"  id="contact_form">

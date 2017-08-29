@@ -18,7 +18,7 @@ public class MailThread extends Thread{
 
 	@Override
 	public void run() {
-		mailService.sendMail("chris.chiu@vascreative.com", "chris.chiu@vascreative.com", mailTitle, content);
+		mailService.sendMail("isoformsys@vascreative.com", mailTo, mailTitle, content);
 	}
 
 	

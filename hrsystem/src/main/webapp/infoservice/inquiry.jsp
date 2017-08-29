@@ -103,8 +103,23 @@ section{
 <title>ISO資訊服務申請單查詢</title>
 <script type="text/javascript">
 $(document).ready(function(){
+	check();
 	list6();
 });
+//=======================================檢查LoginToken=====================================================
+function check(){
+	$.ajax({
+        type: 'get',
+        url: '<%=StringEscapeUtils.escapeHtml(request.getContextPath())%>/emp/welcome',
+        
+        dataType: 'json',
+        async: false,
+        cache: false,
+        error: function (data) {
+        	document.location.href="<%=StringEscapeUtils.escapeHtml(request.getContextPath())%>/employee/login.jsp";
+        }
+    });
+}
 //=======================================承辦清單6===============================================
 function list6(){
 	$.ajax({
@@ -291,6 +306,7 @@ function dateFormat(timestamp) {
 </script>
 </head>
 <body>
+<jsp:include page="/headline.jsp"></jsp:include>
 <!-- list -->
 <center>
 <section style="width: 500px;">

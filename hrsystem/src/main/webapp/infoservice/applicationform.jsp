@@ -11,10 +11,25 @@
 <link rel="stylesheet" href="<%=StringEscapeUtils.escapeHtml(request.getContextPath())%>/resource/css/font-awesome.min.css">
 <script type="text/javascript">
 $(document).ready(function(){
+	check();
 	setApplicantDepNo();
 	depList();
 	aEmpList();
 });
+//=======================================檢查LoginToken=====================================================
+function check(){
+	$.ajax({
+        type: 'get',
+        url: '<%=StringEscapeUtils.escapeHtml(request.getContextPath())%>/emp/welcome',
+        
+        dataType: 'json',
+        async: false,
+        cache: false,
+        error: function (data) {
+        	document.location.href="<%=StringEscapeUtils.escapeHtml(request.getContextPath())%>/employee/login.jsp";
+        }
+    });
+}
 //==================================================抓取applicantDepNo==================================================
 function setApplicantDepNo() {
 	$.ajax({
@@ -176,6 +191,7 @@ function insert(){
 </script>
 </head>
 <body>
+<jsp:include page="/headline.jsp"></jsp:include>
 <div class="container">
 
 <form class="well form-horizontal" method="post" id="contact_form">

@@ -6,13 +6,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link href="<%=StringEscapeUtils.escapeHtml(request.getContextPath())%>/resource/css/bootstrap.css" rel="stylesheet">
 <title>首頁</title>
 
 </head>
 <body>
 <jsp:include page="/headline.jsp"></jsp:include>
 
-這是首頁
+<center><img alt="" src="<%=StringEscapeUtils.escapeHtml(request.getContextPath())%>/resource/img/vasc.jpg" style="margin-top: 300px;"></center>
 
 </body>
 </html>

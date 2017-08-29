@@ -6,8 +6,8 @@
 <html>
 <head>
  <script  src="http://code.jquery.com/jquery-1.12.4.min.js"  integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
- <link href="<%=StringEscapeUtils.escapeHtml(request.getContextPath())%>/resource/css/bootstrap.css" rel="stylesheet"> <!-- pulls in the main bootstrap content we need -->
  <script type="text/javascript" src="<%=StringEscapeUtils.escapeHtml(request.getContextPath())%>/resource/js/bootstrap.js"></script>
+
 
 <script type="text/javascript">
 $(document).ready(function(){
@@ -34,13 +34,13 @@ function welcome(){
         		bodyHTML2 += '<ul class="dropdown-menu" role="menu">';
         		bodyHTML2 += '<li><a href="<c:url value="/employee/Register.controller"/>">新員工資料註冊</a></li>';
         		bodyHTML2 += '<li class="divider"></li>';
-        		bodyHTML2 += '<li><a href="management/department.jsp">部門資訊管理</a></li>';
+        		bodyHTML2 += '<li><a href="<c:url value="/management/department.jsp"/>">部門資訊管理</a></li>';
         		bodyHTML2 += '<li class="divider"></li>';
-        		bodyHTML2 += '<li><a href="management/job.jsp">職務資訊管理</a></li>';
+        		bodyHTML2 += '<li><a href="<c:url value="/management/job.jsp"/>">職務資訊管理</a></li>';
         		bodyHTML2 += '<li class="divider"></li>';
-        		bodyHTML2 += '<li><a href="management/employee.jsp">員工資訊管理</a></li>';
+        		bodyHTML2 += '<li><a href="<c:url value="/management/employee.jsp"/>">員工資訊管理</a></li>';
         		bodyHTML2 += '<li class="divider"></li>';
-        		bodyHTML2 += '<li><a href="infoservice/inquiry.jsp">ISO資訊服務申請單查詢</a></li>';
+        		bodyHTML2 += '<li><a href="<c:url value="/infoservice/inquiry.jsp"/>">ISO資訊服務申請單查詢</a></li>';
         		bodyHTML2 += '</ul>';
         		$('#management').append(bodyHTML2);
         	}
@@ -94,9 +94,9 @@ function logout(){
         class="collapse navbar-collapse"
         id="main_navbar">
         <ul class="nav navbar-nav">
-          <li class="active li-header"><a href="index.jsp">首頁</a></li>
-          <li><a href="infoservice/applicationform.jsp">ISO資訊服務申請單</a></li>
-          <li><a href="infoservice/pendinglist.jsp">待處理資訊服務申請單</a></li>
+          <li class="active li-header"><a href="<%=StringEscapeUtils.escapeHtml(request.getContextPath())%>/index.jsp">首頁</a></li>
+          <li><a href="<%=StringEscapeUtils.escapeHtml(request.getContextPath())%>/infoservice/applicationform.jsp">ISO資訊服務申請單</a></li>
+          <li><a href="<%=StringEscapeUtils.escapeHtml(request.getContextPath())%>/infoservice/pendinglist.jsp">待處理資訊服務申請單</a></li>
           <li id="management" class="dropdown">
             
           </li>

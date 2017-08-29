@@ -6,10 +6,27 @@
 <head>
 <script  src="http://code.jquery.com/jquery-1.12.4.min.js"  integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
 
-<link rel='stylesheet prefetch' href='//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css'>
-
+<!-- <link rel='stylesheet prefetch' href='//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css'> -->
+<link href="<%=StringEscapeUtils.escapeHtml(request.getContextPath())%>/resource/css/bootstrap.css" rel="stylesheet">
 <link rel="stylesheet" href="<%=StringEscapeUtils.escapeHtml(request.getContextPath())%>/resource/css/font-awesome.min.css">
 <script type="text/javascript">
+$(document).ready(function(){
+	check();
+}); 
+//=======================================檢查LoginToken=====================================================
+function check(){
+	$.ajax({
+        type: 'get',
+        url: '<%=StringEscapeUtils.escapeHtml(request.getContextPath())%>/emp/welcome',
+        
+        dataType: 'json',
+        async: false,
+        cache: false,
+        error: function (data) {
+        	document.location.href="<%=StringEscapeUtils.escapeHtml(request.getContextPath())%>/employee/login.jsp";
+        }
+    });
+}
 //==================================================changePW==================================================
 function change() {
 	$.ajax({
@@ -40,8 +57,8 @@ function change() {
 </script>
 </head>
 <body>
+<jsp:include page="/headline.jsp"></jsp:include>
 <div class="container">
-
 <form class="well form-horizontal" method="post" id="contact_form">
 <fieldset>
 

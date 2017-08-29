@@ -6,6 +6,7 @@
 <head>
 <script type="text/javascript" src="<%=StringEscapeUtils.escapeHtml(request.getContextPath())%>/resource/js/jquery-1.11.2.min.js"></script>
 <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css'><script src='https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js'></script>
+<link href="<%=StringEscapeUtils.escapeHtml(request.getContextPath())%>/resource/css/bootstrap.css" rel="stylesheet">
 <style class="cp-pen-styles">body {
 	color: #444;
 	font: 100%/30px 'Helvetica Neue', helvetica, arial, sans-serif;
@@ -119,8 +120,23 @@ tr:last-of-type td:last-child {
 <script type="text/javascript">
 
 $(document).ready(function(){
+	check();
 	list();
 });
+//=======================================檢查LoginToken=====================================================
+function check(){
+	$.ajax({
+        type: 'get',
+        url: '<%=StringEscapeUtils.escapeHtml(request.getContextPath())%>/emp/welcome',
+        
+        dataType: 'json',
+        async: false,
+        cache: false,
+        error: function (data) {
+        	document.location.href="<%=StringEscapeUtils.escapeHtml(request.getContextPath())%>/employee/login.jsp";
+        }
+    });
+}
 //==================================================dep列表==================================================
 function list() {
 	$.ajax({
@@ -227,6 +243,7 @@ function addDep(data){
 </head>
 	
 <body>
+<jsp:include page="/headline.jsp"></jsp:include>
 <table>
   <thead>
     <tr>

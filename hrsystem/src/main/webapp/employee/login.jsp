@@ -6,7 +6,7 @@
 <head>
 <script  src="http://code.jquery.com/jquery-1.12.4.min.js"  integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
 <script src='//production-assets.codepen.io/assets/editor/live/css_live_reload_init-2c0dc5167d60a5af3ee189d570b1835129687ea2a61bee3513dee3a50c115a77.js'></script><meta charset='UTF-8'><meta name="robots" content="noindex"><link rel="shortcut icon" type="image/x-icon" href="//production-assets.codepen.io/assets/favicon/favicon-8ea04875e70c4b0bb41da869e81236e54394d63638a1ef12fa558a4a835f1164.ico" /><link rel="mask-icon" type="" href="//production-assets.codepen.io/assets/favicon/logo-pin-f2d2b6d2c61838f7e76325261b7195c27224080bc099486ddd6dccb469b8e8e6.svg" color="#111" /><link rel="canonical" href="https://codepen.io/milliomola/pen/kXpOLO" />
-
+<link href="<%=StringEscapeUtils.escapeHtml(request.getContextPath())%>/resource/css/bootstrap.css" rel="stylesheet">
 <link rel='stylesheet prefetch' href="https:////netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
 <style class="cp-pen-styles">*
 {
@@ -285,7 +285,7 @@ function login() {
 </script>
 
 </head><body>
-
+<jsp:include page="/headline.jsp"></jsp:include>
 
 <div class="user-card round5">
 	<div class="login-box">
