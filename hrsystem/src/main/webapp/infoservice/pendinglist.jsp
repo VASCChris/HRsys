@@ -365,7 +365,7 @@ function stage3(data){
     form += '服務類別備註:<input id="eventRemark" type="text" value="" /><br><br>';
     form += '事件類別:<select id="event" onchange="infoSecurity()"><option value="0">選擇事件類別</option><option value="建議事項">建議事項</option><option value="非資安事件">非資安事件</option><option value="資安事件">資安事件</option></select><br><br>';
     form += '<form id="security" onclick="setSecurityLv()"></form><br><br>';
-    form += '<div><span>處理方式:&nbsp;&nbsp;</span><textarea id="processWay"></textarea></div><br><div><span>執行開始時間:&nbsp;&nbsp;</span><input type="text" class="Wdate" id="pStartTime" onclick='+ x + attribute + x +' onchange="endTime()" value=""/></div><br><div id="endTime"><span>執行完成時間:&nbsp;&nbsp;</span></div><br><div><span>矯正措施:&nbsp;&nbsp;</span><textarea id="correction"></textarea></div><br><div><span>預定完成時間:&nbsp;&nbsp;</span><input type="text" class="Wdate" id="cEstimated" onclick='+ x + attribute + x +' onchange="cTime()" value=""/></div><br><div id="cTime"><span>實際完成時間:&nbsp;&nbsp;</span></div><br><div><span>改善措施:&nbsp;&nbsp;</span><textarea id="improvement"></textarea></div><br><div><span>預定完成時間:&nbsp;&nbsp;</span><input type="text" class="Wdate" id="iEstimated" onclick='+ x + attribute + x +' onchange="iTime()" value=""/></div><br><div id="iTime"><span>實際完成時間:&nbsp;&nbsp;</span></div><br><div><span>驗證人員:&nbsp;&nbsp;</span><select id="verificationId"><option value="0">請選擇驗證人員</option></select></div><br><div id="remark"></div><br>';
+    form += '<div><span>處理方式:&nbsp;&nbsp;</span><textarea id="processWay"></textarea></div><br><div><span>執行開始時間:&nbsp;&nbsp;</span><input type="text" class="Wdate" id="pStartTime" onclick='+ x + attribute + x +' onchange="endTime()" value=""/></div><br><div id="endTime"><span>執行完成時間:&nbsp;&nbsp;</span></div><br><div id="correction1"></div><br><div id="cEstimated1"></div><br><div id="cTime"></div><br><div id="improvement1"></div><br><div id="iEstimated1"></div><br><div id="iTime"></div><br><div><span>驗證人員:&nbsp;&nbsp;</span><select id="verificationId"><option value="0">請選擇驗證人員</option></select></div><br><div id="remark"></div><br>';
     $('#form').html('');
     $('#form').append(form);
     serviceType();
@@ -451,15 +451,27 @@ function stage4(data){
     var pStartTime = dateFormat(data.pStartTime.time);
     var pEndTime = dateFormat(data.pEndTime.time);
     var pTotalTime = data.pTotalTime;
-    var correction = data.correction;
-    var cEstimated = dateFormat(data.cEstimated.time);
-    var cActual = dateFormat(data.cActual.time);
-    var cTotal = data.cTotal;
-    var improvement = data.improvement;
-    var iEstimated = dateFormat(data.iEstimated.time);
-    var iActual = dateFormat(data.iActual.time);
-    var iTotal = data.iTotal;
     var verification = data.verification;
+    try{
+    	var correction = data.correction;
+        var cEstimated = dateFormat(data.cEstimated.time);
+        var cActual = dateFormat(data.cActual.time);
+        var cTotal = data.cTotal;
+        var improvement = data.improvement;
+        var iEstimated = dateFormat(data.iEstimated.time);
+        var iActual = dateFormat(data.iActual.time);
+        var iTotal = data.iTotal;
+    }catch (e){
+    	var correction = null;
+        var cEstimated = null;
+        var cActual = null;
+        var cTotal = null;
+        var improvement = null;
+        var iEstimated = null;
+        var iActual = null;
+        var iTotal = null;
+    }
+    
 	
     
     //塞入表單
@@ -517,17 +529,17 @@ function stage4(data){
     $('#pStart').append("執行開始時間:&nbsp;&nbsp;"+pStartTime+"&nbsp;&nbsp;&nbsp;");
     $('#pEnd').append("執行完成時間:&nbsp;&nbsp;"+pEndTime+"&nbsp;&nbsp;&nbsp;");
     $('#pTotal').append("執行花費總時間:&nbsp;&nbsp;"+pTotalTime+"分&nbsp;&nbsp;&nbsp;");
-    $('#cWay').append("矯正措施:&nbsp;&nbsp;"+correction+"&nbsp;&nbsp;&nbsp;");
-    $('#cEst').append("預定完成時間:&nbsp;&nbsp;"+cEstimated+"&nbsp;&nbsp;&nbsp;");
-    $('#cAct').append("實際完成時間:&nbsp;&nbsp;"+cActual+"&nbsp;&nbsp;&nbsp;");
-    $('#cTot').append("處理所需時間:&nbsp;&nbsp;"+cTotal+"分&nbsp;&nbsp;&nbsp;");
-    $('#iWay').append("改善措施:&nbsp;&nbsp;"+improvement+"&nbsp;&nbsp;&nbsp;");
-    $('#iEst').append("預定完成時間:&nbsp;&nbsp;"+iEstimated+"&nbsp;&nbsp;&nbsp;");
-    $('#iAct').append("實際完成時間:&nbsp;&nbsp;"+iActual+"&nbsp;&nbsp;&nbsp;");
-    $('#iTot').append("處理所需時間:&nbsp;&nbsp;"+iTotal+"分&nbsp;&nbsp;&nbsp;");
-    $('#ver').append("驗證人員:&nbsp;&nbsp;"+verification+"&nbsp;&nbsp;&nbsp;");
-    
-    
+    if(correction!=null){
+    	$('#cWay').append("矯正措施:&nbsp;&nbsp;"+correction+"&nbsp;&nbsp;&nbsp;");
+        $('#cEst').append("預定完成時間:&nbsp;&nbsp;"+cEstimated+"&nbsp;&nbsp;&nbsp;");
+        $('#cAct').append("實際完成時間:&nbsp;&nbsp;"+cActual+"&nbsp;&nbsp;&nbsp;");
+        $('#cTot').append("處理所需時間:&nbsp;&nbsp;"+cTotal+"分&nbsp;&nbsp;&nbsp;");
+        $('#iWay').append("改善措施:&nbsp;&nbsp;"+improvement+"&nbsp;&nbsp;&nbsp;");
+        $('#iEst').append("預定完成時間:&nbsp;&nbsp;"+iEstimated+"&nbsp;&nbsp;&nbsp;");
+        $('#iAct').append("實際完成時間:&nbsp;&nbsp;"+iActual+"&nbsp;&nbsp;&nbsp;");
+        $('#iTot').append("處理所需時間:&nbsp;&nbsp;"+iTotal+"分&nbsp;&nbsp;&nbsp;");
+        $('#ver').append("驗證人員:&nbsp;&nbsp;"+verification+"&nbsp;&nbsp;&nbsp;");
+    }
     
     var bodyHTML = '<input type="hidden" id="id" value="'+data.id+'" />';
     bodyHTML += '<input type="hidden" id="type" value="'+type+'" />';
@@ -572,14 +584,23 @@ function stage4_5(data){
     var processWay = data.processWay;
     var pStartTime = dateFormat(data.pStartTime.time);
     var pEndTime = dateFormat(data.pEndTime.time);
-    var correction = data.correction;
-    var cEstimated = dateFormat(data.cEstimated.time);
-    var cActual = dateFormat(data.cActual.time);
-    var improvement = data.improvement;
-    var iEstimated = dateFormat(data.iEstimated.time);
-    var iActual = dateFormat(data.iActual.time);
     var verification = data.verification;
     var returnReason = data.returnReason;
+    try{
+    	var correction = data.correction;
+        var cEstimated = dateFormat(data.cEstimated.time);
+        var cActual = dateFormat(data.cActual.time);
+        var improvement = data.improvement;
+        var iEstimated = dateFormat(data.iEstimated.time);
+        var iActual = dateFormat(data.iActual.time);
+    }catch (e){
+    	var correction = null;
+        var cEstimated = null;
+        var cActual = null;
+        var improvement = null;
+        var iEstimated = null;
+        var iActual = null;
+    }
 	
     
     //塞入表單
@@ -623,12 +644,13 @@ function stage4_5(data){
     var cActAttribute ='WdatePicker({skin:"whyGreen",dateFmt:"yyyy-MM-dd HH:mm",minDate:"'+cEstimated+'"})';
     var iActAttribute ='WdatePicker({skin:"whyGreen",dateFmt:"yyyy-MM-dd HH:mm",minDate:"'+iEstimated+'"})';
     var pStart = '執行開始時間: <input type="text" class="Wdate" id="pStartTime" onclick='+ x + attribute + x +' onchange="pEnd()" value="'+pStartTime+'"/>';
-    var cEst = '預定完成時間: <input type="text" class="Wdate" id="cEstimated" onclick='+ x + attribute + x +' onchange="cAct()" value="'+cEstimated+'"/>';
-    var iEst = '預定完成時間: <input type="text" class="Wdate" id="iEstimated" onclick='+ x + attribute + x +' onchange="iAct()" value="'+iEstimated+'"/>';
     var pEnd = '執行完成時間: <input type="text" class="Wdate" id="pEndTime" onclick='+ x + pEndAttribute + x +' value="'+pEndTime+'"/>';
-    var cAct = '實際完成時間: <input type="text" class="Wdate" id="cActual" onclick='+ x + cActAttribute + x +' value="'+cActual+'"/>';
-    var iAct = '實際完成時間: <input type="text" class="Wdate" id="iActual" onclick='+ x + iActAttribute + x +' value="'+iActual+'"/>';
-    
+    if(correction!=null){
+	    var cEst = '預定完成時間: <input type="text" class="Wdate" id="cEstimated" onclick='+ x + attribute + x +' onchange="cAct()" value="'+cEstimated+'"/>';
+	    var iEst = '預定完成時間: <input type="text" class="Wdate" id="iEstimated" onclick='+ x + attribute + x +' onchange="iAct()" value="'+iEstimated+'"/>';
+	    var cAct = '實際完成時間: <input type="text" class="Wdate" id="cActual" onclick='+ x + cActAttribute + x +' value="'+cActual+'"/>';
+	    var iAct = '實際完成時間: <input type="text" class="Wdate" id="iActual" onclick='+ x + iActAttribute + x +' value="'+iActual+'"/>';
+    }
     $('#typeContent').append("類別:&nbsp;&nbsp;"+type+"&nbsp;&nbsp;&nbsp;");
     $('#applicationTime').append("申請時間:&nbsp;&nbsp;"+applicationTime+"&nbsp;&nbsp;&nbsp;");
     $('#applicant').append("申請人:&nbsp;&nbsp;"+applicant+"&nbsp;&nbsp;&nbsp;");
@@ -645,12 +667,14 @@ function stage4_5(data){
     $('#pWay').append('處理方式: <input type="text" id="processWay" value="'+processWay+'" />');
     $('#pStart').append(pStart);
     $('#pEnd').append(pEnd);
-    $('#cWay').append('矯正措施: <input type="text" id="correction" value="'+correction+'" />');
-    $('#cEst').append(cEst);
-    $('#cAct').append(cAct);
-    $('#iWay').append('改善措施: <input type="text" id="improvement" value="'+improvement+'" />');
-    $('#iEst').append(iEst);
-    $('#iAct').append(iAct);
+    if(correction!=null){
+	    $('#cWay').append('矯正措施: <input type="text" id="correction" value="'+correction+'" />');
+	    $('#cEst').append(cEst);
+	    $('#cAct').append(cAct);
+	    $('#iWay').append('改善措施: <input type="text" id="improvement" value="'+improvement+'" />');
+	    $('#iEst').append(iEst);
+	    $('#iAct').append(iAct);
+    }
     $('#ver').append("驗證人員:&nbsp;&nbsp;"+verification+"&nbsp;&nbsp;&nbsp;");
     $('#returnReasonContent').append("退件原因:&nbsp;&nbsp;"+returnReason+"&nbsp;&nbsp;&nbsp;");
     //<input type="text" id="" value="'+ +'" />
@@ -690,17 +714,28 @@ function stage5(data){
     var pStartTime = dateFormat(data.pStartTime.time);
     var pEndTime = dateFormat(data.pEndTime.time);
     var pTotalTime = data.pTotalTime;
-    var correction = data.correction;
-    var cEstimated = dateFormat(data.cEstimated.time);
-    var cActual = dateFormat(data.cActual.time);
-    var cTotal = data.cTotal;
-    var improvement = data.improvement;
-    var iEstimated = dateFormat(data.iEstimated.time);
-    var iActual = dateFormat(data.iActual.time);
-    var iTotal = data.iTotal;
     var verification = data.verification;
     var remark = data.remark;
-	
+    try{
+    	var correction = data.correction;
+        var cEstimated = dateFormat(data.cEstimated.time);
+        var cActual = dateFormat(data.cActual.time);
+        var cTotal = data.cTotal;
+        var improvement = data.improvement;
+        var iEstimated = dateFormat(data.iEstimated.time);
+        var iActual = dateFormat(data.iActual.time);
+        var iTotal = data.iTotal;
+    }catch (e){
+    	var correction = null;
+        var cEstimated = null;
+        var cActual = null;
+        var cTotal = null;
+        var improvement = null;
+        var iEstimated = null;
+        var iActual = null;
+        var iTotal = null;
+    }
+    
     
     $('#typeContent').html('');
     $('#applicationTime').html('');
@@ -751,14 +786,16 @@ function stage5(data){
     $('#pStart').append("執行開始時間:&nbsp;&nbsp;"+pStartTime+"&nbsp;&nbsp;&nbsp;");
     $('#pEnd').append("執行完成時間:&nbsp;&nbsp;"+pEndTime+"&nbsp;&nbsp;&nbsp;");
     $('#pTotal').append("執行花費總時間:&nbsp;&nbsp;"+pTotalTime+"分&nbsp;&nbsp;&nbsp;");
-    $('#cWay').append("矯正措施:&nbsp;&nbsp;"+correction+"&nbsp;&nbsp;&nbsp;");
-    $('#cEst').append("預定完成時間:&nbsp;&nbsp;"+cEstimated+"&nbsp;&nbsp;&nbsp;");
-    $('#cAct').append("實際完成時間:&nbsp;&nbsp;"+cActual+"&nbsp;&nbsp;&nbsp;");
-    $('#cTot').append("處理所需時間:&nbsp;&nbsp;"+cTotal+"分&nbsp;&nbsp;&nbsp;");
-    $('#iWay').append("改善措施:&nbsp;&nbsp;"+improvement+"&nbsp;&nbsp;&nbsp;");
-    $('#iEst').append("預定完成時間:&nbsp;&nbsp;"+iEstimated+"&nbsp;&nbsp;&nbsp;");
-    $('#iAct').append("實際完成時間:&nbsp;&nbsp;"+iActual+"&nbsp;&nbsp;&nbsp;");
-    $('#iTot').append("處理所需時間:&nbsp;&nbsp;"+iTotal+"分&nbsp;&nbsp;&nbsp;");
+    if(correction!=null){
+	    $('#cWay').append("矯正措施:&nbsp;&nbsp;"+correction+"&nbsp;&nbsp;&nbsp;");
+	    $('#cEst').append("預定完成時間:&nbsp;&nbsp;"+cEstimated+"&nbsp;&nbsp;&nbsp;");
+	    $('#cAct').append("實際完成時間:&nbsp;&nbsp;"+cActual+"&nbsp;&nbsp;&nbsp;");
+	    $('#cTot').append("處理所需時間:&nbsp;&nbsp;"+cTotal+"分&nbsp;&nbsp;&nbsp;");
+	    $('#iWay').append("改善措施:&nbsp;&nbsp;"+improvement+"&nbsp;&nbsp;&nbsp;");
+	    $('#iEst').append("預定完成時間:&nbsp;&nbsp;"+iEstimated+"&nbsp;&nbsp;&nbsp;");
+	    $('#iAct').append("實際完成時間:&nbsp;&nbsp;"+iActual+"&nbsp;&nbsp;&nbsp;");
+	    $('#iTot').append("處理所需時間:&nbsp;&nbsp;"+iTotal+"分&nbsp;&nbsp;&nbsp;");
+    }
     $('#ver').append("驗證人員:&nbsp;&nbsp;"+verification+"&nbsp;&nbsp;&nbsp;");
     $('#remarkContent').append('備註:&nbsp;&nbsp;<input type="text" id="remark" value="" />');
     
@@ -891,6 +928,12 @@ function serviceTypeAdd(data){
 function infoSecurity(){
 	var event = $('#event').val();
 	$('#security').html('');
+	$('#correction1').html('');
+	$('#cEstimated1').html('');
+	$('#cTime').html('');
+	$('#improvement1').html('');
+	$('#iEstimated1').html('');
+	$('#iTime').html('');
 	if(event=="資安事件"){
 		$.ajax({
 	        type: 'get',
@@ -903,7 +946,14 @@ function infoSecurity(){
 	        	for (var i = 0; i < data.length; i++) {
 	        		securityLvAdd(data[i]);
 	        	}
-	        	
+	        	var x = "'";
+	            var attribute ='WdatePicker({skin:"whyGreen",dateFmt:"yyyy-MM-dd HH:mm"})'; //有 ' and " 符號問題,所以拆開來寫
+	        	$('#correction1').append('<span>矯正措施:&nbsp;&nbsp;</span><textarea id="correction"></textarea>');
+	        	$('#cEstimated1').append('<span>預定完成時間:&nbsp;&nbsp;</span><input type="text" class="Wdate" id="cEstimated" onclick='+ x + attribute + x +' onchange="cTime()" value=""/>');
+	        	$('#cTime').append('<span>實際完成時間:&nbsp;&nbsp;</span>');
+	        	$('#improvement1').append('<span>改善措施:&nbsp;&nbsp;</span><textarea id="improvement"></textarea>');
+	        	$('#iEstimated1').append('<span>預定完成時間:&nbsp;&nbsp;</span><input type="text" class="Wdate" id="iEstimated" onclick='+ x + attribute + x +' onchange="iTime()" value=""/>');
+	        	$('#iTime').append('<span>實際完成時間:&nbsp;&nbsp;</span>');
 	        }
 	    });
 	}
@@ -970,7 +1020,7 @@ function send(){
         error: function (data) {
         	console.log("error");
         	$('#warn').html('');
-        	$('#warn').append('<font color="red">請確認日期格式 : yyyy-MM-dd HH:mm</font>');
+        	$('#warn').append('<font color="red">請確認是否填寫所有欄位</font>');
         }
     });
 }

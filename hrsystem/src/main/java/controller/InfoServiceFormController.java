@@ -252,81 +252,85 @@ public class InfoServiceFormController implements Serializable{
 		Date pStart = null;
 		try {
 			pStart = sdf.parse(pStartTime);
-		} catch (NullPointerException e1) {
-			if(stageNo==2.0 || stageNo==3.0 || stageNo==99.0) {
-				pStart = null;
-			}else {
+		} catch (Exception e1) {
+			if(stageNo==3.0) {
 				e1.printStackTrace();
+			}else {
+				pStart = null;
 			}
 		}
 		Date pEnd = null;
 		try {
 			pEnd = sdf.parse(pEndTime);
-		} catch (NullPointerException e1) {
-			if(stageNo==2.0 || stageNo==3.0|| stageNo==99.0) {
-				pEnd = null;
-			}else {
+		} catch (Exception e1) {
+			if(stageNo==3.0) {
 				e1.printStackTrace();
+			}else {
+				pEnd = null;
 			}
 		}
 		long pTotal = 0;
 		try {
 			pTotal = (pEnd.getTime() - pStart.getTime())/(1000*60);
-		} catch (NullPointerException e2) {
+		} catch (Exception e2) {
 			pTotal = 0;
 		}
 		
 		Date cEstComplete = null;
 		try {
 			cEstComplete = sdf.parse(cEstimated);
-		} catch (NullPointerException e1) {
-			if(stageNo==2.0 || stageNo==3.0 || stageNo==99.0) {
-				cEstComplete = null;
-			}else {
+		} catch (Exception e1) {
+			if("資安事件".equals(event)) {
 				e1.printStackTrace();
+				return null;
+			}else {
+				cEstComplete = null;
 			}
 		}
 		Date cActComplete = null;
 		try {
 			cActComplete = sdf.parse(cActual);
-		} catch (NullPointerException e1) {
-			if(stageNo==2.0 || stageNo==3.0 || stageNo==99.0) {
-				cActComplete = null;
-			}else {
+		} catch (Exception e1) {
+			if("資安事件".equals(event)) {
 				e1.printStackTrace();
+				return null;
+			}else {
+				cActComplete = null;
 			}
 		}
 		long cTotal = 0;
 		try {
 			cTotal = (cActComplete.getTime() - cEstComplete.getTime())/(1000*60);
-		} catch (NullPointerException e2) {
+		} catch (Exception e2) {
 			cTotal = 0;
 		}
 		
 		Date iEstComplete = null;
 		try {
 			iEstComplete = sdf.parse(iEstimated);
-		} catch (NullPointerException e1) {
-			if(stageNo==2.0 || stageNo==3.0 || stageNo==99.0) {
-				iEstComplete = null;
-			}else {
+		} catch (Exception e1) {
+			if("資安事件".equals(event)) {
 				e1.printStackTrace();
+				return null;
+			}else {
+				iEstComplete = null;
 			}
 		}
 		Date iActComplete = null;
 		try {
 			iActComplete = sdf.parse(iActual);
-		} catch (NullPointerException e1) {
-			if(stageNo==2.0 || stageNo==3.0 || stageNo==99.0) {
-				iActComplete = null;
-			}else {
+		} catch (Exception e1) {
+			if("資安事件".equals(event)) {
 				e1.printStackTrace();
+				return null;
+			}else {
+				iActComplete = null;
 			}
 		}
 		long iTotal = 0;
 		try {
 			iTotal = (iActComplete.getTime() - iEstComplete.getTime())/(1000*60);
-		} catch (NullPointerException e1) {
+		} catch (Exception e1) {
 			iTotal = 0;
 		}
 		
