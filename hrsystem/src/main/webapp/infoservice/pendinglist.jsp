@@ -218,7 +218,7 @@ function stage1(data){
 	
     
     //塞入表單
-    var form ='是否核准:&nbsp;&nbsp;<select id="stage"><option value="2.0">核准</option><option value="99.0">駁回</option></select><br>';
+    var form ='是否核准:&nbsp;&nbsp;<select id="stage" onchange="returnBySupervisor()"><option>請選擇</option><option value="2.0">核准</option><option value="99.0">駁回</option></select><br>';
     $('#form').html('');
     $('#form').append(form);
     
@@ -252,9 +252,9 @@ function stage1(data){
     $('#ver').html('');
     $('#returnReasonContent').html('');
     $('#remarkContent').html('');
+    $('#hide').html('');
     
-    
-//  
+
     $('#typeContent').append("類別:&nbsp;&nbsp;"+type+"&nbsp;&nbsp;&nbsp;");
     $('#applicationTime').append("申請時間:&nbsp;&nbsp;"+applicationTime+"&nbsp;&nbsp;&nbsp;");
     $('#applicant').append("申請人:&nbsp;&nbsp;"+applicant+"&nbsp;&nbsp;&nbsp;");
@@ -271,7 +271,7 @@ function stage1(data){
     bodyHTML += '<input type="hidden" id="applicantDepNo" value="'+data.applicantDepNo+'" />';
     bodyHTML += '<input type="hidden" id="contractorDepNo" value="'+data.contractorDepNo+'" />';
     bodyHTML += '<input type="hidden" id="demandContent" value="'+data.demand+'" />';
-    $('#formDetail').append(bodyHTML);
+    $('#hide').append(bodyHTML);
 }
 //==================================================stage2==================================================
 function stage2(data){
@@ -285,11 +285,14 @@ function stage2(data){
     var contractorDepNo = data.contractorDepNo;
     var contractorSupervisor = data.contractorSupervisor;
     var demand = data.demand;
-	
+    var returnReason = data.returnReason;
+    if(returnReason==undefined){
+    	returnReason=null;
+    }
     
     //塞入表單
     var form = '承辦人:<select id="contractorId"></select><br><br>'
-    	form +=	'是否核准:&nbsp;&nbsp;<select id="stage"><option value="3.0">核准</option><option value="99.0">駁回</option></select><br>';
+    	form +=	'是否核准:&nbsp;&nbsp;<select id="stage" onchange="returnBySupervisor()"><option>請選擇</option><option value="3.0">核准</option><option value="99.0">駁回</option></select><br>';
     $('#form').html('');
     $('#form').append(form);
     cEmpList(contractorDepNo);
@@ -323,9 +326,9 @@ function stage2(data){
     $('#ver').html('');
     $('#returnReasonContent').html('');
     $('#remarkContent').html('');
+    $('#hide').html('');
     
-    
-//  
+  
     $('#typeContent').append("類別:&nbsp;&nbsp;"+type+"&nbsp;&nbsp;&nbsp;");
     $('#applicationTime').append("申請時間:&nbsp;&nbsp;"+applicationTime+"&nbsp;&nbsp;&nbsp;");
     $('#applicant').append("申請人:&nbsp;&nbsp;"+applicant+"&nbsp;&nbsp;&nbsp;");
@@ -334,6 +337,9 @@ function stage2(data){
     $('#applicantSupervisor').append("申請單位主管:&nbsp;&nbsp;"+applicantSupervisor+"&nbsp;&nbsp;&nbsp;");
     $('#contractorSupervisor').append("承辦單位主管:&nbsp;&nbsp;"+contractorSupervisor+"&nbsp;&nbsp;&nbsp;");
     $('#demand').append("服務需求:&nbsp;&nbsp;"+demand+"&nbsp;&nbsp;&nbsp;");
+    if(returnReason!=null){
+    	$('#demand').append("<br><br>承辦人退件原因:&nbsp;&nbsp;"+returnReason+"&nbsp;&nbsp;&nbsp;");
+    }
     
     var bodyHTML = '<input type="hidden" id="id" value="'+data.id+'" />';
     bodyHTML += '<input type="hidden" id="type" value="'+type+'" />';
@@ -342,7 +348,10 @@ function stage2(data){
     bodyHTML += '<input type="hidden" id="applicantDepNo" value="'+data.applicantDepNo+'" />';
     bodyHTML += '<input type="hidden" id="contractorDepNo" value="'+data.contractorDepNo+'" />';
     bodyHTML += '<input type="hidden" id="demandContent" value="'+data.demand+'" />';
-    $('#formDetail').append(bodyHTML);
+    bodyHTML += '<input type="hidden" id="returnReason" value="'+returnReason+'" />';
+    $('#hide').append(bodyHTML);
+    
+    //備註:stage2如果駁回,會直接刪除此單,所以主管退件原因不需在資料庫特地開一格欄位,直接傳到後端取值放進MAIL內容即可
 }
 //==================================================stage3==================================================
 function stage3(data){
@@ -363,9 +372,10 @@ function stage3(data){
     var attribute ='WdatePicker({skin:"whyGreen",dateFmt:"yyyy-MM-dd HH:mm"})'; //有 ' and " 符號問題,所以拆開來寫
     var form = '<div>服務類別:<select id="infoServiceTypeNo"><option value="0">選擇服務類別</option></select></div><br>';
     form += '服務類別備註:<input id="eventRemark" type="text" value="" /><br><br>';
-    form += '事件類別:<select id="event" onchange="infoSecurity()"><option value="0">選擇事件類別</option><option value="建議事項">建議事項</option><option value="非資安事件">非資安事件</option><option value="資安事件">資安事件</option></select><br><br>';
+    form += '事件類別:<select id="event" onchange="infoSecurity()"><option value="非資安事件">非資安事件</option><option value="建議事項">建議事項</option><option value="資安事件">資安事件</option></select><br><br>';
     form += '<form id="security" onclick="setSecurityLv()"></form><br><br>';
     form += '<div><span>處理方式:&nbsp;&nbsp;</span><textarea id="processWay"></textarea></div><br><div><span>執行開始時間:&nbsp;&nbsp;</span><input type="text" class="Wdate" id="pStartTime" onclick='+ x + attribute + x +' onchange="endTime()" value=""/></div><br><div id="endTime"><span>執行完成時間:&nbsp;&nbsp;</span></div><br><div id="correction1"></div><br><div id="cEstimated1"></div><br><div id="cTime"></div><br><div id="improvement1"></div><br><div id="iEstimated1"></div><br><div id="iTime"></div><br><div><span>驗證人員:&nbsp;&nbsp;</span><select id="verificationId"><option value="0">請選擇驗證人員</option></select></div><br><div id="remark"></div><br>';
+    form +='是否核准:&nbsp;&nbsp;<select id="stage" onchange="returnBack()"><option>請選擇</option><option value="4.0">核准</option><option value="2.0">駁回</option></select><br>';
     $('#form').html('');
     $('#form').append(form);
     serviceType();
@@ -401,7 +411,7 @@ function stage3(data){
     $('#ver').html('');
     $('#returnReasonContent').html('');
     $('#remarkContent').html('');
-    
+    $('#hide').html('');
     
 
     $('#typeContent').append("類別:&nbsp;&nbsp;"+type+"&nbsp;&nbsp;&nbsp;");
@@ -424,8 +434,8 @@ function stage3(data){
     bodyHTML += '<input type="hidden" id="contractorDepNo" value="'+data.contractorDepNo+'" />';
     bodyHTML += '<input type="hidden" id="demandContent" value="'+data.demand+'" />';
     bodyHTML += '<input type="hidden" id="securityLv" value="" />';
-    bodyHTML += '<input type="hidden" id="stage" value="4.0" />';
-    $('#formDetail').append(bodyHTML);
+    //bodyHTML += '<input type="hidden" id="stage" value="4.0" />';
+    $('#hide').append(bodyHTML);
     
     
     
@@ -475,7 +485,7 @@ function stage4(data){
 	
     
     //塞入表單
-    var form ='驗證結果:&nbsp;&nbsp;<select id="stage" onchange="returnToContractor()"><option value="5.0">完成</option><option value="4.5">退件</option></select><br>';
+    var form ='驗證結果:&nbsp;&nbsp;<select id="stage" onchange="returnBack()"><option>請選擇</option><option value="5.0">完成</option><option value="4.5">退件</option></select><br>';
     $('#form').html('');
     $('#form').append(form);
     
@@ -509,7 +519,7 @@ function stage4(data){
     $('#ver').html('');
     $('#returnReasonContent').html('');
     $('#remarkContent').html('');
-    
+    $('#hide').html('');
     
 
     $('#typeContent').append("類別:&nbsp;&nbsp;"+type+"&nbsp;&nbsp;&nbsp;");
@@ -538,8 +548,8 @@ function stage4(data){
         $('#iEst').append("預定完成時間:&nbsp;&nbsp;"+iEstimated+"&nbsp;&nbsp;&nbsp;");
         $('#iAct').append("實際完成時間:&nbsp;&nbsp;"+iActual+"&nbsp;&nbsp;&nbsp;");
         $('#iTot').append("處理所需時間:&nbsp;&nbsp;"+iTotal+"分&nbsp;&nbsp;&nbsp;");
-        $('#ver').append("驗證人員:&nbsp;&nbsp;"+verification+"&nbsp;&nbsp;&nbsp;");
     }
+    $('#ver').append("驗證人員:&nbsp;&nbsp;"+verification+"&nbsp;&nbsp;&nbsp;");
     
     var bodyHTML = '<input type="hidden" id="id" value="'+data.id+'" />';
     bodyHTML += '<input type="hidden" id="type" value="'+type+'" />';
@@ -563,7 +573,7 @@ function stage4(data){
     bodyHTML += '<input type="hidden" id="iEstimated" value="'+iEstimated+'" />';
     bodyHTML += '<input type="hidden" id="iActual" value="'+iActual+'" />';
     bodyHTML += '<input type="hidden" id="verificationId" value="'+data.verificationId+'" />';
-    $('#formDetail').append(bodyHTML);
+    $('#hide').append(bodyHTML);
 }
 //==================================================stage4.5==================================================
 function stage4_5(data){
@@ -637,6 +647,7 @@ function stage4_5(data){
     $('#ver').html('');
     $('#returnReasonContent').html('');
     $('#remarkContent').html('');
+    $('#hide').html('');
     
     var x = "'";
     var attribute ='WdatePicker({skin:"whyGreen",dateFmt:"yyyy-MM-dd HH:mm"})'; //有 ' and " 符號問題,所以拆開來寫
@@ -693,7 +704,7 @@ function stage4_5(data){
     bodyHTML += '<input type="hidden" id="securityLv" value="'+data.infoSecurityLv+'" />';
     bodyHTML += '<input type="hidden" id="verificationId" value="'+data.verificationId+'" />';
     bodyHTML += '<input type="hidden" id="stage" value="4.0" />';
-    $('#formDetail').append(bodyHTML);
+    $('#hide').append(bodyHTML);
 }
 //==================================================stage5==================================================
 function stage5(data){
@@ -766,6 +777,7 @@ function stage5(data){
     $('#ver').html('');
     $('#returnReasonContent').html('');
     $('#remarkContent').html('');
+    $('#hide').html('');
     
     
     $('#fileNo').append('文件編號:&nbsp;&nbsp;<input type="text" id="fileNum" value="" />');
@@ -824,7 +836,7 @@ function stage5(data){
     bodyHTML += '<input type="hidden" id="iActual" value="'+iActual+'" />';
     bodyHTML += '<input type="hidden" id="verificationId" value="'+data.verificationId+'" />';
     bodyHTML += '<input type="hidden" id="stage" value="6.0" />';
-    $('#formDetail').append(bodyHTML);
+    $('#hide').append(bodyHTML);
 }
 //==================================================stage 3 & 4.5 日期相關(取得minDate)==================================================
 function endTime(){
@@ -969,12 +981,23 @@ function setSecurityLv(){
 	$('#securityLv').val(securityLv);
 }
 //==================================================退件原因==================================================
-function returnToContractor(){
+function returnBack(){
 	var stage = $('#stage').val();
 	$('#returnReasonContent').html('');
-	if(stage=="4.5"){
+	if(stage=="4.5" || stage=="2.0" || stage=="99.0"){
 		var bodyHTML = '退件原因: <input type="text" id="returnReason" value="" />';
 		$('#returnReasonContent').append(bodyHTML);
+	}
+}
+//==================================================承辦主管退件原因==================================================
+function returnBySupervisor(){
+	var stage = $('#stage').val();
+	$('#returnReasonContent').html('');
+	if(stage=="99.0"){
+		var bodyHTML = '退件原因: <input type="text" id="returnBySupervisor" value="" />';
+		$('#returnReasonContent').append(bodyHTML);
+	}else{
+		$('#returnReason').val(null);
 	}
 }
 //==================================================送出==================================================
@@ -1009,6 +1032,7 @@ function send(){
         	returnReason: $('#returnReason').val(),
         	remark: $('#remark').val(),
         	stage: $('#stage').val(),
+        	returnBySupervisor: $('#returnBySupervisor').val(),
         },
         dataType: 'json',
         async: false,
@@ -1095,7 +1119,7 @@ function send(){
           <div id="remarkContent"></div><br>
           <div id="form"></div><br>
           <div id="returnReasonContent"></div><br>
-          
+          <div id="hide"></div>
           
       </div>
       <div class="modal-footer"><div id="warn"></div>

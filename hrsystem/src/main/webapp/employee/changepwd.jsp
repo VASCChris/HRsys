@@ -98,7 +98,7 @@ function change() {
         <span class="input-group-addon"><i class="fa fa-unlock-alt" aria-hidden="true"></i></span>
   <input id="check" placeholder="輸入新密碼" class="form-control"  type="password" value="" />
     </div>
-    <small id="warn" data-bv-validator="notEmpty" data-bv-validator-for="password" class="help-block" style="color: red;">${errorMsg.password}</small>
+    <small id="warn" data-bv-validator="notEmpty" data-bv-validator-for="password" class="help-block" style="color: red;"></small>
   </div>
 </div>
 

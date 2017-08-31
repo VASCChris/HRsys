@@ -22,6 +22,7 @@ import hr.model.EmpInfoDAO;
 import hr.model.EmpInfoService;
 import hr.model.InfoSecurityLvBean;
 import hr.model.InfoServiceFormBean;
+import hr.model.InfoServiceFormDAO;
 import hr.model.InfoServiceFormService;
 import hr.model.InfoServiceTypeBean;
 import mail.MailService;
@@ -43,6 +44,8 @@ public class InfoServiceFormController implements Serializable{
 	private EmpInfoDAO empInfoDAOHibernate;
 	@Autowired
 	private DepInfoDAO depInfoDAOHibernate;
+	@Autowired
+	private InfoServiceFormDAO infoServiceFormDAOHibernate;
 	
 	
 	@RequestMapping(value = "/get/applicantdep", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
@@ -99,6 +102,11 @@ public class InfoServiceFormController implements Serializable{
     @ResponseBody
 	public String save(String type, String applicant, String applicantDep, String contractorDep, String demand) throws Exception {
 
+        
+		JSONObject jsonObject = new JSONObject();
+        if("".equals(demand)) {
+    		return null;
+        }
 		
 		InfoServiceFormBean bean = new InfoServiceFormBean();
 		EmpInfoBean applicantBean = new EmpInfoBean();
@@ -175,7 +183,7 @@ public class InfoServiceFormController implements Serializable{
 	
 	@RequestMapping(value = "/update", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
     @ResponseBody
-	public String update(String id,String applicationTime,String fileNo,String type,String applicantId,String applicantDepNo,String contractorId,String contractorDepNo,String demandContent,String infoServiceTypeNo,String event,String eventRemark,String securityLv,String processWay,String pStartTime,String pEndTime,String correction,String cEstimated,String cActual,String improvement,String iEstimated,String iActual,String verificationId,String returnReason,String remark,String stage) throws Exception {
+	public String update(String id,String applicationTime,String fileNo,String type,String applicantId,String applicantDepNo,String contractorId,String contractorDepNo,String demandContent,String infoServiceTypeNo,String event,String eventRemark,String securityLv,String processWay,String pStartTime,String pEndTime,String correction,String cEstimated,String cActual,String improvement,String iEstimated,String iActual,String verificationId,String returnReason,String remark,String stage,String returnBySupervisor) throws Exception {
         
         
 		InfoServiceFormBean bean = new InfoServiceFormBean();
@@ -197,7 +205,12 @@ public class InfoServiceFormController implements Serializable{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+		Double stageNo = null;
+		try {
+			stageNo = Double.parseDouble(stage);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		Date applicationTimeSDF = sdf.parse(applicationTime);
 		
 		Integer applicantIdNo = null;
@@ -229,10 +242,18 @@ public class InfoServiceFormController implements Serializable{
 		}
 		
 		Integer infoServiceTypeNum = null;
-		try {
+		try {//在stage3.0如果沒選服務類別,傳進來的值是0,會發生錯誤(因為table中沒有PK是0)
+			 //如果在stage3.0承辦人退件(回到2.0)時,要把傳進來的0改成null,不然會發生錯誤無法回到stage2.0
+			if(stageNo==2.0 || (stageNo==4.0 && "0".equals(infoServiceTypeNo))) {
+				infoServiceTypeNo=null;
+			}
 			infoServiceTypeNum = Integer.parseInt(infoServiceTypeNo);
 		} catch (Exception e) {
 			infoServiceTypeNum = null;
+			if(stageNo==4.0) {
+				//在stage3準備前往4時,如果沒選服務類別,把他退回去
+				return null;
+			}
 		}
 		
 		Integer securityLevel = null;
@@ -240,21 +261,20 @@ public class InfoServiceFormController implements Serializable{
 			securityLevel = Integer.parseInt(securityLv);
 		} catch (Exception e) {
 			securityLevel = null;
+			if("資安事件".equals(event)) {
+				e.printStackTrace();
+				return null;
+			}
 		}
 		
-		Double stageNo = null;
-		try {
-			stageNo = Double.parseDouble(stage);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		
 		Date pStart = null;
 		try {
 			pStart = sdf.parse(pStartTime);
 		} catch (Exception e1) {
-			if(stageNo==3.0) {
+			if(stageNo==4.0) {
 				e1.printStackTrace();
+				return null;
 			}else {
 				pStart = null;
 			}
@@ -263,8 +283,9 @@ public class InfoServiceFormController implements Serializable{
 		try {
 			pEnd = sdf.parse(pEndTime);
 		} catch (Exception e1) {
-			if(stageNo==3.0) {
+			if(stageNo==4.0) {
 				e1.printStackTrace();
+				return null;
 			}else {
 				pEnd = null;
 			}
@@ -416,12 +437,8 @@ public class InfoServiceFormController implements Serializable{
 		bean.setStage(stageNo);
 		bean.setReceiver(receiverBean);
 		
-		if(stageNo==99.0) {
-			infoServiceFormService.delete(bean.getId());
-			return infoServiceFormService.iSFList().toString();
-		}
 		
-		infoServiceFormService.update(bean);
+		
 		
 		String mailTo = null; //主要收件人
 		try {
@@ -469,6 +486,15 @@ public class InfoServiceFormController implements Serializable{
 		String applicantName = empInfoDAOHibernate.select(applicantIdNo).getName();
 		int applicantExt = empInfoDAOHibernate.select(applicantIdNo).getExt();
 		String depName = depInfoDAOHibernate.select(applicantDepNum).getName();
+		Double currentStage = infoServiceFormDAOHibernate.select(idNo).getStage();
+		
+		if(null==returnBySupervisor || "null".equals(returnBySupervisor)) {
+			returnBySupervisor="未填寫";
+		}
+		if(null==returnReason || "null".equals(returnReason)) {
+			returnReason="未填寫";
+		}
+		
 		String content1 = receiveName+" 您好!\r\n" + 
 				"有一張"+applicantName+"申請的資訊服務申請單等待您的簽核，請盡快處理喔！\r\n" + 
 				"類別 : "+type+"\r\n" + 
@@ -492,10 +518,78 @@ public class InfoServiceFormController implements Serializable{
 				"承辦人 : "+contractorName+"\r\n" + 
 				"需求 : "+demandContent+"\r\n \r\n \r\n";
 		
+		String content3 = "您好!\r\n" + 
+				"您申請的資訊服務申請單已被您的主管駁回，請重新申請！\r\n" + 
+				"類別 : "+type+"\r\n" + 
+				"表單流水號 : "+id+"\r\n" + 
+				"階段 : "+stageNo+"\r\n" + 
+				"申請時間 : "+applicationTime+"\r\n" + 
+				"申請部門 : "+depName+"\r\n" + 
+				"申請人 : "+applicantName+"\r\n" + 
+				"分機 : "+applicantExt+"\r\n" + 
+				"需求 : "+demandContent+"\r\n \r\n \r\n" + 
+				"主管退件原因 : "+returnBySupervisor+"\r\n \r\n \r\n";
+		
+		String content4 = "您好!\r\n" + 
+				applicantName+"申請的資訊服務申請單已被承辦單位退件，請重新申請！\r\n" + 
+				"類別 : "+type+"\r\n" + 
+				"表單流水號 : "+id+"\r\n" + 
+				"階段 : "+stageNo+"\r\n" + 
+				"申請時間 : "+applicationTime+"\r\n" + 
+				"申請部門 : "+depName+"\r\n" + 
+				"申請人 : "+applicantName+"\r\n" + 
+				"分機 : "+applicantExt+"\r\n" + 
+				"需求 : "+demandContent+"\r\n \r\n \r\n" + 
+				"承辦主管退件原因 : "+returnBySupervisor+"\r\n \r\n \r\n" + 
+				"承辦人退件原因 : "+returnReason+"\r\n \r\n \r\n";
+		
+		String content5 = receiveName+" 您好!\r\n" + 
+				"有一張"+applicantName+"申請的資訊服務申請單已被退件給您，請盡快處理喔！\r\n" + 
+				"類別 : "+type+"\r\n" + 
+				"表單流水號 : "+id+"\r\n" + 
+				"階段 : "+stageNo+"\r\n" + 
+				"申請時間 : "+applicationTime+"\r\n" + 
+				"申請部門 : "+depName+"\r\n" + 
+				"申請人 : "+applicantName+"\r\n" + 
+				"分機 : "+applicantExt+"\r\n" + 
+				"需求 : "+demandContent+"\r\n \r\n \r\n" + 
+				"承辦人退件原因 : "+returnReason+"\r\n \r\n \r\n" + 
+				"http://192.168.0.9:8080/hrsystem/index.jsp";
+		
+		String content6 = receiveName+" 您好!\r\n" + 
+				"有一張"+applicantName+"申請的資訊服務申請單已被退件給您，請盡快處理喔！\r\n" + 
+				"類別 : "+type+"\r\n" + 
+				"表單流水號 : "+id+"\r\n" + 
+				"階段 : "+stageNo+"\r\n" + 
+				"申請時間 : "+applicationTime+"\r\n" + 
+				"申請部門 : "+depName+"\r\n" + 
+				"申請人 : "+applicantName+"\r\n" + 
+				"分機 : "+applicantExt+"\r\n" + 
+				"需求 : "+demandContent+"\r\n \r\n \r\n" + 
+				"驗證人退件原因 : "+returnReason+"\r\n \r\n \r\n" + 
+				"http://192.168.0.9:8080/hrsystem/index.jsp";
+		
 		if(receiverBean!=null) {
 			String mailTitle = "資訊服務申請單簽核通知";
-			Thread thread = new MailThread(mailTo, content1, mailTitle, mailService);
+			if(stageNo==2.0 && currentStage==3.0) {
+				Thread thread = new MailThread(mailTo, content5, "資訊服務申請單退件通知", mailService);
+				thread.start();
+			}else if(stageNo==4.5) {
+				Thread thread = new MailThread(mailTo, content6, "資訊服務申請單退件通知", mailService);
+				thread.start();
+			}else {
+				Thread thread = new MailThread(mailTo, content1, mailTitle, mailService);
+				thread.start();
+			}
+		}
+		if(stageNo==99.0 && currentStage==1.0) {
+			Thread thread = new MailThread(mailTo, content3, "資訊服務申請單退件通知", mailService);
 			thread.start();
+			infoServiceFormService.delete(bean.getId());
+		}else if(stageNo==99.0 && currentStage==2.0) {
+			Thread thread = new MailThread(mailTo, content4, "資訊服務申請單退件通知", mailService);
+			thread.start();
+			infoServiceFormService.delete(bean.getId());
 		}
 		if(stageNo==3.0) {                                    //資訊服務申請單管理人員,目前是Dori(12)
 			String mailTitle = "資訊服務申請單進度通知";
@@ -512,7 +606,7 @@ public class InfoServiceFormController implements Serializable{
 			thread3.start();
 			thread4.start();
 		}
-		
+		infoServiceFormService.update(bean);
 		return infoServiceFormService.iSFList().toString();
 	}
 }

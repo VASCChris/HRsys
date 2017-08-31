@@ -185,6 +185,8 @@ function insert(){
         },
         error: function (data) {
         	console.log("error");
+        	$('#warn').html('');
+        	$('#warn').append("請確認是否有未填欄位");
         }
     });
 }
@@ -251,6 +253,7 @@ function insert(){
         <span class="input-group-addon"><i class="fa fa-question-circle-o" aria-hidden="true"></i></span>
   <textarea id="demand" placeholder="問題說明" class="form-control" ></textarea>
     </div>
+    <small id="warn" data-bv-validator="notEmpty" class="help-block" style="color: red;"></small>
   </div>
 </div>
 

@@ -186,16 +186,27 @@ function stage6(data){
     var pStartTime = dateFormat(data.pStartTime.time);
     var pEndTime = dateFormat(data.pEndTime.time);
     var pTotalTime = data.pTotalTime;
-    var correction = data.correction;
-    var cEstimated = dateFormat(data.cEstimated.time);
-    var cActual = dateFormat(data.cActual.time);
-    var cTotal = data.cTotal;
-    var improvement = data.improvement;
-    var iEstimated = dateFormat(data.iEstimated.time);
-    var iActual = dateFormat(data.iActual.time);
-    var iTotal = data.iTotal;
     var verification = data.verification;
     var remark = data.remark;
+    try{
+    	var correction = data.correction;
+        var cEstimated = dateFormat(data.cEstimated.time);
+        var cActual = dateFormat(data.cActual.time);
+        var cTotal = data.cTotal;
+        var improvement = data.improvement;
+        var iEstimated = dateFormat(data.iEstimated.time);
+        var iActual = dateFormat(data.iActual.time);
+        var iTotal = data.iTotal;
+    }catch (e){
+    	var correction = null;
+        var cEstimated = null;
+        var cActual = null;
+        var cTotal = null;
+        var improvement = null;
+        var iEstimated = null;
+        var iActual = null;
+        var iTotal = null;
+    }
 	
     if(infoSecurityLv == undefined){
     	infoSecurityLv = "";
@@ -254,14 +265,16 @@ function stage6(data){
     $('#pStart').append("執行開始時間:&nbsp;&nbsp;"+pStartTime+"&nbsp;&nbsp;&nbsp;");
     $('#pEnd').append("執行完成時間:&nbsp;&nbsp;"+pEndTime+"&nbsp;&nbsp;&nbsp;");
     $('#pTotal').append("執行花費總時間:&nbsp;&nbsp;"+pTotalTime+"分&nbsp;&nbsp;&nbsp;");
-    $('#cWay').append("矯正措施:&nbsp;&nbsp;"+correction+"&nbsp;&nbsp;&nbsp;");
-    $('#cEst').append("預定完成時間:&nbsp;&nbsp;"+cEstimated+"&nbsp;&nbsp;&nbsp;");
-    $('#cAct').append("實際完成時間:&nbsp;&nbsp;"+cActual+"&nbsp;&nbsp;&nbsp;");
-    $('#cTot').append("處理所需時間:&nbsp;&nbsp;"+cTotal+"分&nbsp;&nbsp;&nbsp;");
-    $('#iWay').append("改善措施:&nbsp;&nbsp;"+improvement+"&nbsp;&nbsp;&nbsp;");
-    $('#iEst').append("預定完成時間:&nbsp;&nbsp;"+iEstimated+"&nbsp;&nbsp;&nbsp;");
-    $('#iAct').append("實際完成時間:&nbsp;&nbsp;"+iActual+"&nbsp;&nbsp;&nbsp;");
-    $('#iTot').append("處理所需時間:&nbsp;&nbsp;"+iTotal+"分&nbsp;&nbsp;&nbsp;");
+    if(correction!=null){
+	    $('#cWay').append("矯正措施:&nbsp;&nbsp;"+correction+"&nbsp;&nbsp;&nbsp;");
+	    $('#cEst').append("預定完成時間:&nbsp;&nbsp;"+cEstimated+"&nbsp;&nbsp;&nbsp;");
+	    $('#cAct').append("實際完成時間:&nbsp;&nbsp;"+cActual+"&nbsp;&nbsp;&nbsp;");
+	    $('#cTot').append("處理所需時間:&nbsp;&nbsp;"+cTotal+"分&nbsp;&nbsp;&nbsp;");
+	    $('#iWay').append("改善措施:&nbsp;&nbsp;"+improvement+"&nbsp;&nbsp;&nbsp;");
+	    $('#iEst').append("預定完成時間:&nbsp;&nbsp;"+iEstimated+"&nbsp;&nbsp;&nbsp;");
+	    $('#iAct').append("實際完成時間:&nbsp;&nbsp;"+iActual+"&nbsp;&nbsp;&nbsp;");
+	    $('#iTot').append("處理所需時間:&nbsp;&nbsp;"+iTotal+"分&nbsp;&nbsp;&nbsp;");
+    }
     $('#ver').append("驗證人員:&nbsp;&nbsp;"+verification+"&nbsp;&nbsp;&nbsp;");
     $('#remarkContent').append("備註:&nbsp;&nbsp;"+remark+"&nbsp;&nbsp;&nbsp;");
     
