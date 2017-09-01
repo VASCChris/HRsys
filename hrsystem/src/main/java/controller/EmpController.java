@@ -34,6 +34,12 @@ public class EmpController implements Serializable{
 		return empInfoService.empList().toString();
 	}
 	
+	@RequestMapping(value = "/count", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String count(String status) throws Exception {
+		return empInfoService.count(status).toString();
+	}
+	
 	@RequestMapping(value = "/save", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
     @ResponseBody
 	public String empSave(String account, String password,String empNo,String name,String engName,String ext,String depNo,String jobNo,String character) throws Exception {
@@ -71,7 +77,7 @@ public class EmpController implements Serializable{
 	
 	@RequestMapping(value = "/update", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
     @ResponseBody
-	public String empUpdate(String id, String account,String empNo,String name,String engName,String ext,String depNo,String jobNo,String character) throws Exception {
+	public String empUpdate(String id, String account,String empNo,String name,String engName,String ext,String depNo,String jobNo,String character,String status) throws Exception {
 		
 		DepInfoBean depInfoBean = new DepInfoBean();
 		JobInfoBean jobInfoBean = new JobInfoBean();
@@ -99,6 +105,7 @@ public class EmpController implements Serializable{
 		bean.setDepInfoBean(depInfoBean);
 		bean.setJobInfoBean(jobInfoBean);
 		bean.setCharacter(character);
+		bean.setStatus(status);
 		Boolean result = empInfoService.update(bean);
 		if(result)
 		  return empInfoService.empList().toString();

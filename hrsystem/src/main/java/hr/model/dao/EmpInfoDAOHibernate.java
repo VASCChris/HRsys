@@ -89,6 +89,7 @@ public class EmpInfoDAOHibernate implements EmpInfoDAO {
 				temp.setDepInfoBean(bean.getDepInfoBean());
 				temp.setJobInfoBean(bean.getJobInfoBean());
 				temp.setCharacter(bean.getCharacter());
+				temp.setStatus(bean.getStatus());
 			}
 			return temp;
 		}
@@ -102,6 +103,12 @@ public class EmpInfoDAOHibernate implements EmpInfoDAO {
 			return true;
 		}
 		return false;
+	}
+	
+	public Integer count(String status) {
+		Query query = this.getSession().createQuery("SELECT COUNT(*) FROM EmpInfoBean  WHERE status=?");
+		query.setParameter(0, status);
+		return ((Long)query.uniqueResult()).intValue();
 	}
 
 	public static void main(String[] arg){
@@ -125,7 +132,7 @@ public class EmpInfoDAOHibernate implements EmpInfoDAO {
 		bean.setDepInfoBean(depInfoBean);
 		bean.setJobInfoBean(jobInfoBean);
 		bean.setCharacter("xxx");
-		EmpInfoBean xxx = dao.selectByCharactor("superadmin");
+		Integer xxx = dao.count("在職");
 		System.out.println(xxx);
 		
 		sessionFactory.getCurrentSession().getTransaction().commit();

@@ -94,6 +94,10 @@ public class EmpInfoService implements Serializable{
 		}
 		return result;
 	}
+	
+	public Integer count(String status) {
+		return empInfoDAOHibernate.count(status);
+	}
 
 	
     public static void main(String[] arg){

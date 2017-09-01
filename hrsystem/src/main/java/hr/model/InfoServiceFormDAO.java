@@ -23,4 +23,5 @@ public interface InfoServiceFormDAO {
 	
 	Boolean delete(int id);
 
+	Integer count(EmpInfoBean receiver);
 }

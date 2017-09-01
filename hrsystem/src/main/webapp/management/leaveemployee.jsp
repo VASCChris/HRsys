@@ -122,11 +122,9 @@ tr:last-of-type td:last-child {
 var deps = '';
 var jobs = '';
 $(document).ready(function(){
-	console.log("TEST1");
 	check();
 	list();
 	countEmp();
-	console.log("TEST2");
 });
 //=======================================檢查LoginToken=====================================================
 function check(){
@@ -167,7 +165,7 @@ function list() {
 function addEmp(data){
 	var id = data.id;
 	var status = data.status;
-	if("在職"==status){
+	if("離職"==status){
 		var bodyHTML = '<tr>';
 		bodyHTML += '<td><input id="empNo' + id +'" type="text" value="' + data.empNo +'"></td>';
 		bodyHTML += '<td><input id="account' + id +'" type="text" value="' + data.account +'"></td>';
@@ -184,17 +182,16 @@ function addEmp(data){
 }	
 //==================================================抓人數==================================================
 function countEmp(){
-	console.log("TEST");
 	$.ajax({
         type: 'get',
-        url: '<%=StringEscapeUtils.escapeHtml(request.getContextPath())%>/emp/count?status=在職',
+        url: '<%=StringEscapeUtils.escapeHtml(request.getContextPath())%>/emp/count?status=離職',
         
         dataType: 'json',
         async: false,
         cache: false,
         success: function (data) {
         	var bodyHTML = '<tr>';
-        	bodyHTML += '<td>在職總人數</td><td>'+data+'人</td></tr>';
+        	bodyHTML += '<td>離職總人數</td><td>'+data+'人</td></tr>';
         	$('#empList').append(bodyHTML);
         }
     });

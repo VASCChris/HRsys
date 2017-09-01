@@ -68,6 +68,16 @@ public class InfoServiceFormController implements Serializable{
 		return infoServiceFormService.iSFList().toString();
 	}
 	
+	@RequestMapping(value = "/count", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String count(HttpServletRequest request) throws Exception {
+        HttpSession session = request.getSession();
+		
+		EmpInfoBean emp = (EmpInfoBean)session.getAttribute("loginToken");
+		int empId = emp.getId();
+		return infoServiceFormService.count(empId).toString();
+	}
+	
 	@RequestMapping(value = "/detail", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
     @ResponseBody
     public String findById(String num) throws Exception {

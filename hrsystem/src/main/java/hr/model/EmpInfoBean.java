@@ -43,6 +43,8 @@ public class EmpInfoBean implements Serializable{
 	private JobInfoBean jobInfoBean;
 	@Column(name="characters")
 	private String character;
+	@Column(name="status")
+	private String status;
 	@OneToMany(fetch=FetchType.EAGER, mappedBy="applicant")
 	private Set<InfoServiceFormBean> applicants = new HashSet<InfoServiceFormBean>();
 	@OneToMany(fetch=FetchType.EAGER, mappedBy="contractor")
@@ -52,6 +54,8 @@ public class EmpInfoBean implements Serializable{
 	@OneToMany(fetch=FetchType.EAGER, mappedBy="receiver")
 	private Set<InfoServiceFormBean> receivers = new HashSet<InfoServiceFormBean>();
 	
+	
+
 	public int getId() {
 		return id;
 	}
@@ -132,6 +136,14 @@ public class EmpInfoBean implements Serializable{
 		this.character = character;
 	}
 
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	public Set<InfoServiceFormBean> getApplicants() {
 		return applicants;
 	}
@@ -178,18 +190,19 @@ public class EmpInfoBean implements Serializable{
 		empInfoBean.put("jobNo", jobInfoBean.getNo());
 		empInfoBean.put("jobName", jobInfoBean.getName());
 		empInfoBean.put("character", character);
-		
+		empInfoBean.put("status", status);
 		
 		return empInfoBean;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "EmpInfoBean [id=" + id + ", account=" + account + ", password=" + password + ", empNo=" + empNo
-				+ ", name=" + name + ", engName=" + engName + ", ext=" + ext + ", depNo=" + depInfoBean.getNo()
-				+ ", depName=" + depInfoBean.getName()+ ", jobNo=" + jobInfoBean.getNo()
-				+ ", jobName=" + jobInfoBean.getName() + ", character=" + character + "]";
+				+ ", name=" + name + ", engName=" + engName + ", ext=" + ext + ", depInfoBean=" + depInfoBean
+				+ ", jobInfoBean=" + jobInfoBean + ", character=" + character + ", status=" + status + "]";
 	}
+	
+	
 	
 	
 	

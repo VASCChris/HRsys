@@ -161,6 +161,7 @@ public class RegisterServlet extends HttpServlet {
 		bean.setDepInfoBean(depInfoBean);
 		bean.setJobInfoBean(jobInfoBean);
 		bean.setCharacter(character);
+		bean.setStatus("在職");
 		
 		if ("register".equals(send)) {
 			Boolean insert = empInfoService.insert(bean);

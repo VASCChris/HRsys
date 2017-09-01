@@ -135,6 +135,12 @@ public class InfoServiceFormService {
 		return result;
 	}
     
+    public Integer count(int id) {
+    	EmpInfoBean bean = new EmpInfoBean();
+    	bean.setId(id);
+		return infoServiceFormDAOHibernate.count(bean);
+	}
+    
     public static void main(String[] arg){
 		ApplicationContext context = new ClassPathXmlApplicationContext("beans.config.xml");
 		SessionFactory sessionFactory = (SessionFactory)context.getBean("sessionFactory");
@@ -143,7 +149,7 @@ public class InfoServiceFormService {
 		
 		
 		
-		JSONArray xxx = infoServiceFormService.iSFListByReceiver(10);
+		Integer xxx = infoServiceFormService.count(7);
 		System.out.println(xxx);
 		
 		sessionFactory.getCurrentSession().getTransaction().commit();

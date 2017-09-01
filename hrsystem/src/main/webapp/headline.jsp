@@ -38,13 +38,38 @@ function welcome(){
         		bodyHTML2 += '<li class="divider"></li>';
         		bodyHTML2 += '<li><a href="<c:url value="/management/employee.jsp"/>">員工資訊管理</a></li>';
         		bodyHTML2 += '<li class="divider"></li>';
+        		bodyHTML2 += '<li><a href="<c:url value="/management/leaveemployee.jsp"/>">離職員工資訊管理</a></li>';
+        		bodyHTML2 += '<li class="divider"></li>';
         		bodyHTML2 += '<li><a href="<c:url value="/infoservice/inquiry.jsp"/>">ISO資訊服務申請單查詢</a></li>';
         		bodyHTML2 += '</ul>';
         		$('#management').append(bodyHTML2);
         	}
+        	count();
         },
         error: function (data) {
         	console.log("no loginToken");
+        }
+    });
+}
+//=======================================查詢是否有未處理申請單=====================================================
+function count(){
+	$.ajax({
+        type: 'get',
+        url: '<%=StringEscapeUtils.escapeHtml(request.getContextPath())%>/infoservice/count',
+        
+        dataType: 'json',
+        async: false,
+        cache: false,
+        success: function (data) {
+        	console.log("success");
+        	$('#mark').html('');
+        	if(data!=0){
+        		$('#list').prepend('<li id="mark"><img style="position:relative;top: 18px;left: 225px;" src="<%=StringEscapeUtils.escapeHtml(request.getContextPath())%>/resource/img/red.png"></li>');
+        	}
+        },
+        error: function (data) {
+        	console.log("error");
+        	$('#mark').html('');
         }
     });
 }
@@ -89,16 +114,13 @@ function logout(){
       </div><!-- /collapsed navbar-->
 
       <!-- start un-collapsed navbar-->
-      <div 
-        class="collapse navbar-collapse"
-        id="main_navbar">
-        <ul class="nav navbar-nav">
+      <div class="collapse navbar-collapse" id="main_navbar">
+        <ul id="list" class="nav navbar-nav">
+          
           <li class="active li-header"><a href="<%=StringEscapeUtils.escapeHtml(request.getContextPath())%>/index.jsp">首頁</a></li>
           <li><a href="<%=StringEscapeUtils.escapeHtml(request.getContextPath())%>/infoservice/applicationform.jsp">ISO資訊服務申請單</a></li>
-          <li><a href="<%=StringEscapeUtils.escapeHtml(request.getContextPath())%>/infoservice/pendinglist.jsp">待處理資訊服務申請單</a></li>
-          <li id="management" class="dropdown">
-            
-          </li>
+          <li style="position:relative"><a href="<%=StringEscapeUtils.escapeHtml(request.getContextPath())%>/infoservice/pendinglist.jsp">待處理資訊服務申請單</a></li>
+          <li id="management" class="dropdown"></li> 
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li id="member" class="dropdown"></li>

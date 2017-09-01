@@ -127,6 +127,12 @@ public class InfoServiceFormDAOHibernate implements InfoServiceFormDAO {
 		}
 		return false;
 	}
+	
+	public Integer count(EmpInfoBean receiver) {
+		Query query = this.getSession().createQuery("SELECT COUNT(*) FROM InfoServiceFormBean  WHERE receiver=?");
+		query.setParameter(0, receiver);
+		return ((Long)query.uniqueResult()).intValue();
+	}
 
 	public static void main(String[] arg){
 		ApplicationContext context = new ClassPathXmlApplicationContext("beans.config.xml");
@@ -181,8 +187,8 @@ public class InfoServiceFormDAOHibernate implements InfoServiceFormDAO {
 		temp.setReceiver(empInfoBean);
 	    
 		EmpInfoBean xxx = new EmpInfoBean();
-		xxx.setId(10);
-		List<InfoServiceFormBean> ooo2 = dao.selectByReceiver(xxx);
+		xxx.setId(8);
+		Integer ooo2 = dao.count(xxx);
 		System.out.println(ooo2);
 		
 		sessionFactory.getCurrentSession().getTransaction().commit();

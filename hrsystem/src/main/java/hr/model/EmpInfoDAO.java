@@ -21,4 +21,6 @@ public interface EmpInfoDAO {
 	EmpInfoBean update(EmpInfoBean bean);
 	
 	Boolean delete(int id);
+	
+	Integer count(String status);
 }
