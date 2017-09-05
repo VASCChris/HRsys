@@ -34,6 +34,53 @@ public class InfoServiceFormDAOHibernate implements InfoServiceFormDAO {
 	public InfoServiceFormBean select(int id) {
 		return (InfoServiceFormBean)this.getSession().get(InfoServiceFormBean.class, id);
 	}
+	
+	public List<Integer> selectByCondition(DepInfoBean depNo,Date start,Date over,EmpInfoBean contractor,String fileNo,Integer firstRow,Integer maxRows){
+		StringBuilder hql = new StringBuilder("select id from InfoServiceFormBean where file_no is not null");
+		if (null != depNo) {
+            hql.append(" and applicantDep= :depNo");
+        }
+		if(null!=start && null!=over) {
+			hql.append(" and applicationTime>= :start and applicationTime< :over");
+		}
+		if(null != contractor) {
+			hql.append(" and contractor= :contractor");
+		}
+		if(null != fileNo && !"".equals(fileNo)) {
+			hql.append(" and fileNo= :fileNo");
+		}
+		hql.append(" order by id desc"); 
+		Query query = this.getSession().createQuery(hql.toString());
+		if (null != depNo) {
+			query.setParameter("depNo", depNo);
+        }
+		if(null!=start && null!=over) {
+			query.setParameter("start", start);
+			query.setParameter("over", over);
+		}
+		if(null != contractor) {
+			query.setParameter("contractor", contractor);
+		}
+		if(null != fileNo && !"".equals(fileNo)) {
+			query.setParameter("fileNo", fileNo);
+		}
+		if (null != firstRow) {
+            query.setFirstResult(firstRow);
+        }
+        if (null != maxRows) {
+            query.setMaxResults(maxRows);
+        }
+		
+		
+		return query.list();
+	}
+	
+	public List<Integer> selectByUndone(){
+		StringBuilder hql = new StringBuilder("select id from InfoServiceFormBean where file_no is null order by id desc");
+		Query query = this.getSession().createQuery(hql.toString());
+		
+		return query.list();
+	}
 
 	public List<InfoServiceFormBean> select() {
 		return this.getSession().createQuery("from InfoServiceFormBean").list();
@@ -128,6 +175,11 @@ public class InfoServiceFormDAOHibernate implements InfoServiceFormDAO {
 		return false;
 	}
 	
+	public Integer count() {
+		Query query = this.getSession().createQuery("SELECT COUNT(*) FROM InfoServiceFormBean");
+		return ((Long)query.uniqueResult()).intValue();
+	}
+	
 	public Integer count(EmpInfoBean receiver) {
 		Query query = this.getSession().createQuery("SELECT COUNT(*) FROM InfoServiceFormBean  WHERE receiver=?");
 		query.setParameter(0, receiver);
@@ -186,9 +238,30 @@ public class InfoServiceFormDAOHibernate implements InfoServiceFormDAO {
 		temp.setStage(1.0);
 		temp.setReceiver(empInfoBean);
 	    
-		EmpInfoBean xxx = new EmpInfoBean();
-		xxx.setId(8);
-		Integer ooo2 = dao.count(xxx);
+//		EmpInfoBean xxx = new EmpInfoBean();
+//		xxx.setId(8);
+		DepInfoBean depInfoBean2 = new DepInfoBean();
+		depInfoBean2.setNo(5);
+		Date start = null;
+		try {
+			start = sdf.parse("2017-09-01 00:55");
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Date over = null;
+		try {
+			over = sdf.parse("2017-09-03 00:55");
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		EmpInfoBean empInfoBean2 = new EmpInfoBean();
+		empInfoBean2.setId(1);
+		
+//		List<Integer> ooo2 = dao.selectByCondition(null, null, null, null, null, 0, 10);
+//		List<Integer> ooo2 = dao.selectByCondition(depInfoBean2, start, over, empInfoBean2, null, 0, 10);
+		Integer ooo2 = dao.count();
 		System.out.println(ooo2);
 		
 		sessionFactory.getCurrentSession().getTransaction().commit();

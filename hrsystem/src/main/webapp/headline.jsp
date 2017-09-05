@@ -110,7 +110,7 @@ function logout(){
           class="navbar-toggle collapsed"
           data-toggle="collapse" 
           data-target="#main_navbar"
-          aria-expanded="false">open!</button>       
+          aria-expanded="false">選單</button>       
       </div><!-- /collapsed navbar-->
 
       <!-- start un-collapsed navbar-->

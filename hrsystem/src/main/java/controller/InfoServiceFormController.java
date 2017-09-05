@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -62,16 +63,79 @@ public class InfoServiceFormController implements Serializable{
 		return jsonObject.toString();
 	}
 	
+	@RequestMapping(value = "/search/condition", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
+    @ResponseBody
+    public String conditionSearch(String depNo,String start,String over,String contractor,String fileNo,String page) throws Exception {
+		
+		DepInfoBean depInfoBean = new DepInfoBean();
+		EmpInfoBean empInfoBean = new EmpInfoBean();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		
+		//轉換資料
+		Integer depNum = null;
+		try {
+			depNum = Integer.parseInt(depNo);
+		} catch (Exception e) {
+			depNum = null;
+		}
+		Date startDate = null;
+		try {
+			startDate = sdf.parse(start);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Date overDate = null;
+		try {
+			overDate = sdf.parse(over);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Integer contractorID = null;
+		try {
+			contractorID = Integer.parseInt(contractor);
+		} catch (Exception e) {
+			contractorID = null;
+		}
+		Integer pageNo = null;
+		try {
+			pageNo = Integer.parseInt(page);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		if(0==depNum) {
+			depNum=null;
+		}
+		if(0==contractorID) {
+			contractorID=null;
+		}
+		
+		depInfoBean.setNo(depNum);
+		empInfoBean.setId(contractorID);                                                                  //每頁10筆
+		String result = infoServiceFormService.conditionSearch(depInfoBean, startDate, overDate, empInfoBean, fileNo, pageNo, 10).toString();
+		
+		
+		return result;
+	}
+	
 	@RequestMapping(value = "/list", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
     @ResponseBody
     public String list() throws Exception {
 		return infoServiceFormService.iSFList().toString();
 	}
 	
+	@RequestMapping(value = "/count/all", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String count() throws Exception {
+		Integer datas = infoServiceFormService.count();
+		
+		return datas.toString();
+	}
+	
 	@RequestMapping(value = "/count", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String count(HttpServletRequest request) throws Exception {
-        HttpSession session = request.getSession();
+		HttpSession session = request.getSession();
 		
 		EmpInfoBean emp = (EmpInfoBean)session.getAttribute("loginToken");
 		int empId = emp.getId();
